@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>root@birthday:~</title>
+    <!-- Добавь эту строку ↓ -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Стилизованная системная ошибка в стиле консоли -->
+    <div class="console-error" id="systemError">
+        <div class="error-terminal">
+            <div class="error-header">
+                <span class="error-prompt">KERNEL PANIC - Not syncing: fatal exception</span>
+            </div>
+            <div class="error-body">
+                <div class="error-line">CPU: 0 PID: 1337 Comm: birthday_quest Tainted: G</div>
+                <div class="error-line">Hardware name: QEMU Standard PC</div>
+                <div class="error-line">RIP: 0010:[&lt;ffffffff8105b9d0&gt;] birthday_module_init+0x50/0x100</div>
+                <div class="error-line">RSP: 0018:ffff88001f8a3e78 EFLAGS: 00010286</div>
+                <div class="error-line">RAX: 0000000000000000 RBX: ffffffffc0000000 RCX: 0000000000000000</div>
+                <div class="error-line">RDX: 0000000000000000 RSI: 0000000000000246 RDI: ffffffffc0001000</div>
+                <div class="error-line">CR2: 0000000000000000 CR3: 000000001f8a2000 CR4: 00000000000406b0</div>
+                <div class="error-line">Call Trace:</div>
+                <div class="error-line">[&lt;ffffffff81002068&gt;] ? do_one_initcall+0x58/0x1e0</div>
+                <div class="error-line">[&lt;ffffffff8113b6df&gt;] ? kmem_cache_alloc_trace+0x1af/0x1c0</div>
+                <div class="error-line">[&lt;ffffffff811e5e5e&gt;] ? kernel_init_freeable+0x14e/0x1d7</div>
+                <div class="error-line">---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b</div>
+                <div class="error-line" style="margin-top: 20px; color: #ffff00;">*** System requires immediate attention ***</div>
+                <div class="error-line" style="color: #ffff00;">Press any key or tap screen to continue...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="congratulation-window" id="congratulationWindow">
+        <div class="congratulation-content">
+            <div class="congratulation-header">
+                <h1>🎉 С ДНЁМ РОЖДЕНИЯ, ТИМА! 🎉</h1>
+                <div class="age-badge">17 лет</div>
+            </div>
+            
+            <div class="congratulation-body">
+                <div class="message-section">
+                    <p class="main-message">Дорогой Тима! Мы с Ильёй от всей души поздравляем тебя с 17-летием!</p>
+                    
+                    <div class="personal-message">
+                        <p>Этот подарок — не просто код. Это кусочек нашей души, в который мы вложили море времени, креатива и любви. </p>
+                        
+                        <p>Я провел бессонные ночи, чтобы каждая строчка кода, каждая анимация, каждый пасхальный элемент работали идеально. 
+                        Отлаживал баги, продумывал логику квестов, подбирал самые интересные загадки — всё для того, чтобы твой день рождения запомнился надолго!</p>
+                        
+                        <p>Мы оба, я и Илья, искренне желаем тебе:</p>
+                    </div>
+                    
+                    <div class="wishes-list">
+                        <div class="wish-item">⚡ Невероятной энергии для всех твоих начинаний</div>
+                        <div class="wish-item">🚀 Стремительного роста и крутых амбиций</div>
+                        <div class="wish-item">💡 Гениальных идей и смелых проектов</div>
+                        <div class="wish-item">🎯 Точно попадать в каждую цель</div>
+                        <div class="wish-item">❤️ Настоящей дружбы и верных товарищей</div>
+                        <div class="wish-item">🌟 Ярких моментов и незабываемых эмоций</div>
+                    </div>
+                    
+                    <div class="closing-message">
+                        <p>17 лет — это старт во взрослую жизнь, и мы верим, что тебя ждут невероятные успехи!</p>
+                        <p>Помни: мы всегда гордились, гордимся и будем гордиться тобой! Ты — наш герой! 🦸‍♂️</p>
+                    </div>
+                </div>
+                
+                <div class="signature">
+                    <div class="brothers">
+                        <span class="brother">С любовью, твой брат</span>
+                        <span class="brother">и  Илья</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="close-btn" onclick="closeCongratulations()">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="terminal" id="terminal">
+        <div class="line">
+            <span class="prompt">Welcome to Ubuntu 23.04 (GNU/Linux 6.2.0-26-generic x86_64)</span>
+        </div>
+        <div class="line">
+            <span class="prompt">* Documentation:  https://help.ubuntu.com</span>
+        </div>
+        <div class="line">
+            <span class="prompt">* Management:     https://landscape.canonical.com</span>
+        </div>
+        <div class="line">
+            <span class="prompt">* Support:        https://ubuntu.com/advantage</span>
+        </div>
+        <div class="line"><br></div>
+        
+        <div id="commandHistory"></div>
+        
+        <div class="line" id="currentLine">
+            <span class="user">brother</span><span class="prompt">@</span><span class="host">birthday</span><span class="prompt">:</span><span class="path">~</span><span class="prompt">$ </span>
+            <input type="text" class="command" id="commandInput" autofocus>
+        </div>
+    </div>
+
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+    cursor: text;
+}
+
+.terminal {
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.prompt {
+    color: #00ff00;
+}
+
+.user {
+    color: #00ffff;
+}
+
+.host {
+    color: #ffff00;
+}
+
+.path {
+    color: #ff00ff;
+}
+
+.command {
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    outline: none;
+    width: 80%;
+}
+
+.line {
+    margin-bottom: 5px;
+    white-space: pre-wrap;
+}
+
+.output {
+    color: #cccccc;
+    margin-bottom: 10px;
+}
+
+.error {
+    color: #ff0000;
+}
+
+.success {
+    color: #00ff00;
+}
+
+.warning {
+    color: #ffff00;
+}
+
+.hidden {
+    display: none;
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+/* Стилизованная ошибка в стиле консоли */
+.console-error {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+}
+
+.error-terminal {
+    background: #000;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+}
+
+.error-header {
+    background: #ff0000;
+    color: #000;
+    padding: 10px 15px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-radius: 3px;
+}
+
+.error-body {
+    color: #ff6b6b;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.error-line {
+    margin-bottom: 5px;
+    white-space: pre-wrap;
+}
+
+.error-prompt {
+    font-weight: bold;
+}
+
+/* Окно поздравления */
+.congratulation-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    padding: 20px;
+}
+
+.congratulation-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 3px solid #00ff00;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 50px rgba(0, 255, 0, 0.3);
+    position: relative;
+    animation: slideIn 0.5s ease-out;
+}
+
+.congratulation-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.congratulation-header h1 {
+    color: #00ff00;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+.age-badge {
+    display: inline-block;
+    background: #ff00ff;
+    color: #000;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.2em;
+    box-shadow: 0 0 15px #ff00ff;
+    animation: pulse 2s infinite;
+}
+
+.congratulation-body {
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+.message-section {
+    margin-bottom: 30px;
+}
+
+.main-message {
+    font-size: 1.3em;
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.personal-message p {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    text-align: justify;
+}
+
+.personal-message p:nth-child(2) {
+    color: #ffff00;
+    font-style: italic;
+}
+
+.personal-message p:nth-child(3) {
+    color: #ffcc00;
+    background: rgba(255, 204, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 3px solid #ffcc00;
+}
+
+.wishes-list {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(0, 255, 0, 0.05);
+    border-radius: 15px;
+    border: 1px solid #00ff00;
+}
+
+.wish-item {
+    padding: 8px 0;
+    font-size: 1.1em;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.wish-item:hover {
+    color: #00ff00;
+    transform: translateX(10px);
+}
+
+.closing-message {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255, 0, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid #ff00ff;
+}
+
+.closing-message p {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.closing-message p:last-child {
+    color: #ffff00;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.signature {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #00ffff;
+}
+
+.brothers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.3em;
+}
+
+.brother {
+    color: #00ffff;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.brother:last-child {
+    color: #ffcc00;
+    font-size: 1.1em;
+}
+
+.close-btn {
+    background: transparent;
+    border: 2px solid #ff0000;
+    color: #ff0000;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    border-radius: 25px;
+    cursor: pointer;
+    margin: 20px auto 0;
+    display: block;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+.close-btn:hover {
+    background: #ff0000;
+    color: #000;
+    box-shadow: 0 0 20px #ff0000;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .congratulation-content {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .congratulation-header h1 {
+        font-size: 1.8em;
+    }
+    
+    .main-message {
+        font-size: 1.1em;
+    }
+    
+    .personal-message p {
+        font-size: 1em;
+    }
+    
+    .wish-item {
+        font-size: 1em;
+    }
+
+    .console-error {
+        padding: 10px;
+    }
+    
+    .error-terminal {
+        max-width: 95%;
+        padding: 15px;
+    }
+    
+    .error-body {
+        font-size: 12px;
+    }
+    
+    .error-line {
+        margin-bottom: 3px;
+    }
+}
+
+
+/* Убери старые стили системной ошибки если есть */
+.system-error {
+    display: none !important;
+
+
+
+}
+</style>
+
+    <script src="script.js"></script>
+</body>
+</html>
